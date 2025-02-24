@@ -3,6 +3,10 @@
 #include <string.h>
 #include <stdlib.h>
 
+// Definiçoes de constantes
+#define MEM_SIZE 65536;
+#define NUM_REG 8
+
 const char* hexa_to_bin(char c) {
     switch (c) {
         case '0': return "0000";
@@ -26,15 +30,16 @@ const char* hexa_to_bin(char c) {
 }
 
 void hex_to_bin(const char* hex, char* bin) {
-    bin[0] = '\0'; // Inicializa a string binária
-    while (*hex) {
-        strcat(bin, hexa_to_bin(*hex++));
+    int len = strlen(hex);
+    bin[0] = '\0';
+    for (int i = 0; i < len; i++) {
+        strcat(bin, hexa_to_bin(hex[i]));
     }
 }
 
 int bin_to_int(const char* bin, int start, int length) {
     int bin_len = strlen(bin);
-    if (start + lenght > bin_len) {
+    if (start + length > bin_len) {
     // tratamento de erro ou retorno de um valor inválido
     return -1;
     }
