@@ -69,14 +69,19 @@ void print_instruction(const char* bin, int* R, int* FLAGS, int* SP, int* memori
         case 0x4: // ADD
             printf("ADD R%d, R%d, R%d\n", rd, rm, rn);
             R[rd] = R[rm] + R[rn];
+            FLAGS[2] = (R[rd] == 0) ? 1 : 0; // Zero flag
+            FLAGS[3] = (R[rd] < 0) ? 1 : 0; // Sinal flag
             break;
         case 0x5: // SUB
             printf("SUB R%d, R%d, R%d\n", rd, rm, rn);
             R[rd] = R[rm] - R[rn];
+            FLAGS[2] = (R[rd] == 0) ? 1 : 0; // Zero flag
+            FLAGS[3] = (R[rd] < 0) ? 1 : 0; // Sinal flag
             break;
         case 0x0: // Comandos especiais e NOP
-            if (strcmp(bin, "0000000000000000") == 0) {
-                printf("NOP\n");
+            if (strcmp(bin, "0000100", 7) == 0) { // JMP
+                printf("JMP #%d\n", im);
+                *PC = (*PC & 0xFF00) | im;
                 // Imprime o conteúdo dos registradores
                 print_registers(R, *PC, *SP, FLAGS);
             } else if (strcmp(bin, "0000000000001001") == 0) { // PSH
