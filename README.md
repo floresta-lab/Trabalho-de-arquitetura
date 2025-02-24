@@ -33,6 +33,11 @@ void hex_to_bin(const char* hex, char* bin) {
 }
 
 int bin_to_int(const char* bin, int start, int length) {
+    int bin_len = strlen(bin);
+    if (start + lenght > bin_len) {
+    // tratamento de erro ou retorno de um valor inválido
+    return -1;
+    }
     int value = 0;
     for (int i = 0; i < length; i++) {
         value = (value << 1) | (bin[start + i] - '0');
@@ -78,12 +83,10 @@ void print_instruction(const char* bin, int* R, int* FLAGS, int* SP, int* memori
             FLAGS[2] = (R[rd] == 0) ? 1 : 0; // Zero flag
             FLAGS[3] = (R[rd] < 0) ? 1 : 0; // Sinal flag
             break;
-        case 0x0: // Comandos especiais e NOP
+        case 0x0: 
             if (strcmp(bin, "0000100", 7) == 0) { // JMP
                 printf("JMP #%d\n", im);
-                *PC = (*PC & 0xFF00) | im;
-                // Imprime o conteúdo dos registradores
-                print_registers(R, *PC, *SP, FLAGS);
+                *PC = im; // Atualiza o valor absoluto do PC
             } else if (strcmp(bin, "0000000000001001") == 0) { // PSH
                 printf("PSH R%d\n", rm);
                 memoria[--(*SP)] = R[rm];
