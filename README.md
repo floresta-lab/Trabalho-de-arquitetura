@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 // Definiçoes de constantes
-#define MEM_SIZE 65536;
+#define MEM_SIZE 65536
 #define NUM_REG 8
 
 const char* hexa_to_bin(char c) {
